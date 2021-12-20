@@ -22,7 +22,7 @@ export default function Board() {
 
   useEffect(() => {
     if(result.state !== "none"){//Only when someone won
-      alert(`Game finished. player ${result.winner} won`);
+      alert(`Game finished. ${result.winner} won`);
     }
 
   }, [result])
