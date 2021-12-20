@@ -1,8 +1,7 @@
 .square{
 padding: 0;
 margin: 0;
-flex: 33.33%; /*33% of its parent */
-height: 100%; /* 100% of the row */
+flex: 33%; /*33% of its parent */
 border: 1px solid rgb(223, 90, 112);
 display: flex;
 justify-content: center;

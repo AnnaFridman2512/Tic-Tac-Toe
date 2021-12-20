@@ -6,12 +6,26 @@ import {Patterns} from '../Patterns.js'
 export default function Board() {
 
   const [board, setBoard] = useState(["","","","","","","","",""]);
-  const [player, setPlayer] = useState("X"); //X starts first
+  const [player, setPlayer] = useState("O"); //X starts first, but the useEffect changes it to O at first render, so we start with O and the useEffect will change it to X 
   const [result, setResult] = useState({winner: "none", state: "none"});
 
   useEffect(()=>{
     checkWin();
+    checkIfTie();
+
+    if(player === "X"){
+      setPlayer("O");
+    }else if( player === "O"){
+      setPlayer("X");
+    }
   }, [board]);
+
+  useEffect(() => {
+    if(result.state !== "none"){//Only when someone won
+      alert(`Game finished. player ${result.winner} won`);
+    }
+
+  }, [result])
 
   const chooseSquare = (square) =>{
     setBoard(board.map((val, idx) => {
@@ -21,11 +35,6 @@ export default function Board() {
       return val;
     }));
 
-    if(player === "X"){
-      setPlayer("O");
-    }else if( player === "O"){
-      setPlayer("X");
-    }
   }
 
   const checkWin = ()=> {
@@ -35,21 +44,38 @@ export default function Board() {
       if (currPlayer === "") return 
       let foundWinningPattern = true; //assuming we found a winning pattern
 
-      currPattern.forEach((idx)=> {
-        if(board[idx] !== currPlayer){
+      currPattern.forEach((idx)=> {//Check if all the indexes written in the current pattern are filled with the same player
+        if(board[idx] !== currPlayer){//And if they don't:
           foundWinningPattern = false;
         }
       });
 
-      if (foundWinningPattern){
-        setResult({winner: player, state: "won"})
+      if (foundWinningPattern){//And if they are filled with the same player
+        setResult({winner: player, state: "Won"})
       }
+    } );
+  }
 
-    } )
-    
+  const checkIfTie = () => {
+    let filled = true; //When all the squares are filled
+    board.forEach((square)=> {
+        if (square === ""){
+          filled = false;
+        }
+    });
+
+     if(filled){
+      setResult({winner: "No One", state: "Tie"})
+    }
+  }
+
+  const restartGame = () =>{
+    setBoard(["","","","","","","","",""]);
+    setPlayer("O");
   }
 
     return (
+      <div className="container">
       <div className="board">
         <div className='row'>
           <Square val={board[0]} chooseSquare={() => {chooseSquare(0)}}/>
@@ -66,6 +92,8 @@ export default function Board() {
           <Square val={board[7]} chooseSquare={() => {chooseSquare(7)}}/>
           <Square val={board[8]} chooseSquare={() => {chooseSquare(8)}}/>
         </div>
+      </div>
+      <button onClick={restartGame}> RESET </button>
       </div>
     );
   }

@@ -1,3 +1,10 @@
+.container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
 .board{
     padding: 0;
     margin: 0;
@@ -10,7 +17,7 @@
 }
 
 .row{
-    flex: 33.33%;
+    flex: 33%; /*33% of its parent */
     display: flex;
     flex-direction: row;
    
